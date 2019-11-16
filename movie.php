@@ -1,3 +1,12 @@
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
 <?php
 // UID
 if(isset($_SESSION['user']))
@@ -57,6 +66,28 @@ try {
             </div>
         </div>
         </div>
+        <div class="modal" id="rentAMovie" tabindex="-1" role="dialog">
+        <div class="modal-dialog"  role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Rent this movie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Select a start date and a end date</p>
+                <p>Start: <input type="text" name="startDate" id="datepicker"> End: <input type="text" name="endDate" id="datepicker"></p>
+                <h3>Verify availability:</h3>
+                <p>{{YES/NO}}</p>
+                <br/>
+                <!-- If yes show the button -->
+                <a href="#" class="btn btn-info">Rent this movie</a>
+            </div>
+            
+            </div>
+        </div>
+        </div>
             <div class="row">
                 <a href="#" id="rent" class="btn btn-info" title="sdadasd">Rent this movie</a>
             </div>
@@ -80,8 +111,13 @@ $(document).ready(() => {
         {
             $('#rentError').modal('show');
         }
+        else
+        {
+            $('#rentAMovie').modal('show');
+        }
     });
 });
 </script>
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <?php include 'footer.php'; ?>
