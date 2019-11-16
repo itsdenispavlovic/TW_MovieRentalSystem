@@ -1,4 +1,14 @@
 <?php
+// UID
+if(isset($_SESSION['user']))
+{
+    // User is logged in
+    $uid = $_SESSION['user'];
+}
+else
+{
+    $uid = 0;
+}
 // Get id
 if(isset($_GET['mid']))
 {
@@ -28,12 +38,50 @@ try {
             <p class="card-text"><small class="text-muted"><?php echo $row['date_created']; ?></small></p>
             </div>
         </div>
+        <br>
+        <div class="container">
+        <div class="modal" id="rentError" tabindex="-1" role="dialog">
+        <div class="modal-dialog"  role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>To rent the following movie "<?php echo $row['title']; ?>" you need to login.</p>
+                <a href="#" class="btn btn-success">Login</a>
+            </div>
+            
+            </div>
+        </div>
+        </div>
+            <div class="row">
+                <a href="#" id="rent" class="btn btn-info" title="sdadasd">Rent this movie</a>
+            </div>
+        </div>
+       
         <?php
+        //Fullname, username, email, password
     }
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
 ?>
+<script>
+$(document).ready(() => {
+    // Rent button click event
+    $('#rent').click((event) => {
+        event.preventDefault();
 
+        var isLoggedin = <?php echo $uid ?>;
+        if(isLoggedin == 0)
+        {
+            $('#rentError').modal('show');
+        }
+    });
+});
+</script>
 
 <?php include 'footer.php'; ?>

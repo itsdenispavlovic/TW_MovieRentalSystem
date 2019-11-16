@@ -1,4 +1,13 @@
-<?php include 'conn.php'; ?>
+<?php include 'conn.php'; 
+if(isset($_SESSION['user']))
+{
+    $uid = $_SESSION['user'];
+}
+else
+{
+    $uid = 0;
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,6 +26,7 @@
         right: 200px;
     }
     </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   </head>
   <body>
     <!-- Navigation -->
@@ -27,7 +37,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled"><?php echo ($user->isLoggedin()) ? "{{USERNAME}}" : "Guest"; ?></a>
+                    <a class="nav-link disabled"><?php echo ($user->isLoggedin()) ? $user->getUsername($uid) : "Guest"; ?></a>
                 </li>
             </ul>
         </div>
@@ -43,7 +53,7 @@
                     <a class="nav-link" href="#">Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                <?php echo (!$user->isLoggedin()) ? "<a class='nav-link' href='login.php' >Login</a>" : "<a class='nav-link' href='logout.php' >Logout</a>"; ?>
                 </li>
             </ul>
         </div>
