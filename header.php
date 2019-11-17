@@ -50,7 +50,10 @@ else
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Search</a>
+                    <a class="nav-link" href="search.php">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="moviesRented">Movies Rented</a>
                 </li>
                 <li class="nav-item">
                 <?php echo (!$user->isLoggedin()) ? "<a class='nav-link' href='login.php' >Login</a>" : "<a class='nav-link' href='logout.php' >Logout</a>"; ?>
