@@ -2,11 +2,15 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
          rel = "stylesheet">
-<script>
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
-  </script>
+<style>
+.event
+{
+    background-color: red !important;
+    color: white !important;
+    pointer-events: none;
+}
+</style>
+
 <?php
 // UID
 if(isset($_SESSION['user']))
@@ -29,7 +33,84 @@ else
     header("Location: index.php");
 }
 include 'header.php';
+?>
+<script>
 
+    
+
+  $( function() {
+    
+    var eventDates = {};
+    // Foreach php
+    $.ajax
+    ({
+        type: 'POST',
+        url: 'rentedMovies.php',
+        data: {mid: <?php echo $movieID; ?>},
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            // for
+            // alert(response[0]);
+            for(var i=0; i < response.length; i++)
+            {
+                eventDates[ new Date(response[i]) ] = new Date(response[i]);
+            }
+            
+        }
+    });
+
+ 
+    $( "#datepicker" ).datepicker({
+        beforeShowDay: function ( date ) {
+            var highlight = eventDates[date];
+            if(highlight)
+            {
+                return [true, "event", "Tooltip text"];
+            }
+            else
+            {
+                return [true, '', ''];
+            }
+        }
+    });
+  } );
+  $( function() {
+    var eventDates = {};
+    // Foreach php
+    $.ajax
+    ({
+        type: 'POST',
+        url: 'rentedMoviesE.php',
+        data: {mid: <?php echo $movieID; ?>},
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            // for
+            // alert(response[0]);
+            for(var i=0; i < response.length; i++)
+            {
+                eventDates[ new Date(response[i]) ] = new Date(response[i]);
+            }
+            
+        }
+    });
+    $( "#datepicker2" ).datepicker({
+        beforeShowDay: function ( date ) {
+            var highlight = eventDates[date];
+            if(highlight)
+            {
+                return [true, "event", "Tooltip text"];
+            }
+            else
+            {
+                return [true, '', ''];
+            }
+        }
+    });
+  } );
+  </script>
+<?php
 try {
     $statement = $conn->prepare("SELECT * FROM movies WHERE id=:mid");
     $statement->bindParam(':mid', $movieID, PDO::PARAM_INT);
@@ -60,7 +141,7 @@ try {
             </div>
             <div class="modal-body text-center">
                 <p>To rent the following movie "<?php echo $row['title']; ?>" you need to login.</p>
-                <a href="#" class="btn btn-success">Login</a>
+                <a href="login.php" class="btn btn-success">Login</a>
             </div>
             
             </div>
@@ -76,13 +157,17 @@ try {
                 </button>
             </div>
             <div class="modal-body text-center">
-                <p>Select a start date and a end date</p>
-                <p>Start: <input type="text" name="startDate" id="datepicker"> End: <input type="text" name="endDate" id="datepicker"></p>
-                <h3>Verify availability:</h3>
-                <p>{{YES/NO}}</p>
-                <br/>
-                <!-- If yes show the button -->
-                <a href="#" class="btn btn-info">Rent this movie</a>
+                <form id="rentM">
+                    <input type="text" name="uid" hidden value="<?php echo $_SESSION['user']; ?>">
+                    <input type="text" name="mid" hidden value="<?php echo $movieID; ?>">
+                    <p>Select a start date and a end date</p>
+                    <p>Start: <input type="text" name="startDate" id="datepicker"> End: <input type="text" name="endDate" id="datepicker2"></p>
+                    <h3>Verify availability:</h3>
+                    <p>{{YES/NO}}</p>
+                    <br/>
+                    <!-- If yes show the button -->
+                    <a href="#" id="rentB" class="btn btn-info">Rent this movie</a>
+                </form>
             </div>
             
             </div>
@@ -115,6 +200,21 @@ $(document).ready(() => {
         {
             $('#rentAMovie').modal('show');
         }
+    });
+
+    $('#rentB').click((e) => {
+        e.preventDefault();
+
+        $.ajax
+        ({
+            type: 'POST',
+            url: 'rentMovieAction.php',
+            data: $('#rentM').serialize(),
+            success: function (response) {
+                alert(response);
+                
+            }
+        });
     });
 });
 </script>
