@@ -6,6 +6,89 @@ class User
         $this->db = $conn;
     }
 
+    // Is Admin
+    public function isAdmin($uid)
+    {
+        try
+        {
+            $statement = $this->db->prepare("SELECT * FROM users WHERE id=:uid AND isadmin=1");
+            $statement->bindParam(':uid', $uid, PDO::PARAM_INT);
+            $statement->execute();
+
+            if($statement->rowCount() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        } catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    // get discount
+    public function getDiscount($mid)
+    {
+        try
+        {
+            $statement = $this->db->prepare("SELECT * FROM movies WHERE id=:mid");
+            $statement->bindParam(':mid', $mid, PDO::PARAM_INT);
+            $statement->execute();
+
+            // 10 percent
+            $discount = 0.1;
+
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if($statement->rowCount() > 0)
+            {
+                $price = $row['price'];
+
+                $final = $price - ($price * $discount);
+
+                echo $final;
+            }
+
+            
+        } catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+     // get price
+     public function getPrice($mid)
+     {
+         try
+         {
+             $statement = $this->db->prepare("SELECT * FROM movies WHERE id=:mid");
+             $statement->bindParam(':mid', $mid, PDO::PARAM_INT);
+             $statement->execute();
+ 
+             // 10 percent
+             $discount = 0.1;
+ 
+             $row = $statement->fetch(PDO::FETCH_ASSOC);
+ 
+             if($statement->rowCount() > 0)
+             {
+                 $price = $row['price'];
+ 
+                 
+ 
+                 echo $price;
+             }
+ 
+             
+         } catch(PDOException $e)
+         {
+             echo $e->getMessage();
+         }
+     }
+
     // Is logged in or not
     public function isLoggedin()
     {
@@ -102,6 +185,24 @@ class User
             if($statement->rowCount() > 0)
             {
                 echo $row['username'];   
+            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    // Get Username 
+    public function getMovieTitle($mid)
+    {
+        
+        try {
+            $statement = $this->db->prepare("SELECT * FROM movies WHERE id = :mid");
+            $statement->bindParam(":mid", $mid, PDO::PARAM_INT);
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            if($statement->rowCount() > 0)
+            {
+                echo $row['title'];   
             }
         } catch (PDOException $e) {
             echo $e->getMessage();

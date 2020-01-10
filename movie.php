@@ -162,8 +162,6 @@ try {
                     <input type="text" name="mid" hidden value="<?php echo $movieID; ?>">
                     <p>Select a start date and a end date</p>
                     <p>Start: <input type="text" name="startDate" id="datepicker"> End: <input type="text" name="endDate" id="datepicker2"></p>
-                    <h3>Verify availability:</h3>
-                    <p>{{YES/NO}}</p>
                     <br/>
                     <!-- If yes show the button -->
                     <a href="#" id="rentB" class="btn btn-info">Rent this movie</a>

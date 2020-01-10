@@ -34,15 +34,18 @@ else
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled"><?php echo ($user->isLoggedin()) ? $user->getUsername($uid) : "Guest"; ?></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled"><?php echo ($user->isLoggedin() && $user->isAdmin($uid)) ? "ADMIN" : ""; ?></a>
+                </li>
             </ul>
         </div>
         <div class="mx-auto order-0">
-            <a class="navbar-brand mx-auto" href="#">Movie Rental System</a>
+            <a class="navbar-brand mx-auto" href="index.php">Movie Rental System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -52,9 +55,16 @@ else
                 <li class="nav-item">
                     <a class="nav-link" href="search.php">Search</a>
                 </li>
+                <?php if($user->isLoggedin()){ ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="moviesRented">Movies Rented</a>
+                    <a class="nav-link" href="moviesRented.php">Movies Rented</a>
                 </li>
+                <?php if($user->isLoggedin() && $user->isAdmin($uid)) { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo ($user->isLoggedin() && $user->isAdmin($uid)) ? "addmovie.php" : ""; ?>"><?php echo ($user->isLoggedin() && $user->isAdmin($uid)) ? "All Movies" : ""; ?></a>
+                </li>
+                <?php } ?>
+                <?php } ?>
                 <li class="nav-item">
                 <?php echo (!$user->isLoggedin()) ? "<a class='nav-link' href='login.php' >Login</a>" : "<a class='nav-link' href='logout.php' >Logout</a>"; ?>
                 </li>

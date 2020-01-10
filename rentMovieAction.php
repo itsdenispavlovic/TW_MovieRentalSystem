@@ -38,15 +38,32 @@ try {
     }
     else
     {
-        $statement = $conn->prepare("INSERT INTO rentetMovies(uid, mid, generatedCode, start, end) VALUES(:uid, :mid, :generatedCode, :start, :end)");
-        $statement->execute(array(
+        // verify daca sunt acelea
+        $verifyMovie = $conn->prepare("SELECT * FROM rentetMovies WHERE uid=:uid AND mid=:mid");
+        $verifyMovie->execute(array(
             ':uid' => $uid,
-            ':mid' => $mid,
-            ':generatedCode' => $generatedCode,
-            ':start' => $Sdate,
-            ':end' => $Edate
+            ':mid' => $mid
         ));
-        echo "Success!";
+
+        if($verifyMovie->rowCount() > 0)
+        {
+            // TODO
+            // the movie has been already rented, don't add one more time!
+            return false;
+        }
+        else
+        {
+            $statement = $conn->prepare("INSERT INTO rentetMovies(uid, mid, generatedCode, start, end) VALUES(:uid, :mid, :generatedCode, :start, :end)");
+            $statement->execute(array(
+                ':uid' => $uid,
+                ':mid' => $mid,
+                ':generatedCode' => $generatedCode,
+                ':start' => $Sdate,
+                ':end' => $Edate
+            ));
+            echo "Success!";
+        }
+        
     }
 } catch (PDOException $e) {
     $e->getMessage();

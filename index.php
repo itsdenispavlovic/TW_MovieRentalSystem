@@ -21,6 +21,7 @@ try
                     <div class="card-body">
                     <h5 class="card-title text-center"><?php echo $row['title']; ?></h5>
                     <p class="card-text"><?php echo $row['content']; ?></p>
+                    <h5>Price: $<?php echo $row['price']; ?></h5>
                     <p class="card-text"><small class="text-muted"><?php echo $row['date_created']; ?></small></p>
                     </div>
                 </div>
